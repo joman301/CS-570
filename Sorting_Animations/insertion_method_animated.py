@@ -1,23 +1,23 @@
-# import all the modules
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import matplotlib as mp
 import numpy as np
 import random
 
-# set the style of the graph
+# Setting the graph style
 plt.style.use('fivethirtyeight')
 
-# input the size of the array (list here)
-# and shuffle the elements to create
-# a random list
-n = int(input("enter array size\n"))
-a = [i for i in range(1, n+1)]
-random.shuffle(a)
+# Creates a list of randomized numbers n elements long
+n = int(input("Enter array size: "))
+min = 0
+max = 100
+a = []
+for i in range(1,n):
+	a.append(random.randint(min,max))
+#random.shuffle(a)
 
-# insertion sort
 
-
+# Insertion sort method
 def insertionsort(a):
 	for j in range(1, len(a)):
 		key = a[j]
@@ -34,10 +34,10 @@ def insertionsort(a):
 		yield a
 
 
-# generator object returned by the function
+# Insertion sort is a generator object because of the yield statments
 generator = insertionsort(a)
 
-# to set the colors of the bars.
+# Setting the color of the bars with a custom color map
 data_normalizer = mp.colors.Normalize()
 color_map = mp.colors.LinearSegmentedColormap(
 	"my_map",
@@ -51,27 +51,23 @@ color_map = mp.colors.LinearSegmentedColormap(
 	}
 )
 
-
+# Creating the matplotlib figure
 fig, ax = plt.subplots()
 
-# the bar container
+# Creating the bars for the figure
 rects = ax.bar(range(len(a)), a, align="edge",
 			color=color_map(data_normalizer(range(n))))
 
-# setting the view limit of x and y axes
+# Setting x and y view limits based off of maximum value bounds
 ax.set_xlim(0, len(a))
-ax.set_ylim(0, int(1.1*len(a)))
+ax.set_ylim(0, int(1.1*max))
 
-# the text to be shown on the upper left
-# indicating the number of iterations
-# transform indicates the position with
-# relevance to the axes coordinates.
+# Creating the text object that displays the iteration count
 text = ax.text(0.01, 0.95, "", transform=ax.transAxes)
 iteration = [0]
 
-# function to be called repeatedly to animate
 
-
+# Animation function (called repeatedly)
 def animate(A, rects, iteration):
 
 	# setting the size of each bar equal
@@ -80,11 +76,12 @@ def animate(A, rects, iteration):
 		rect.set_height(val)
 
 	iteration[0] += 1
-	text.set_text("iterations : {}".format(iteration[0]))
+	text.set_text("Iterations : {}".format(iteration[0]))
 
 
+# Animation object that calls the animate function, as well as the bars/ text to be displayed
 anim = FuncAnimation(fig, func=animate,
-					fargs=(rects, iteration), frames=generator, interval=25,
+					fargs=(rects, iteration), frames=generator, interval=100,
 					repeat=False)
 
 plt.show()
