@@ -70,7 +70,7 @@ iteration = [0]
 # Animation function (called repeatedly)
 def animate(A, rects, iteration):
 
-	# setting the size of each bar equal
+	# Setting the size of each bar equal
 	# to the value of the elements
 	for rect, val in zip(rects, A):
 		rect.set_height(val)
